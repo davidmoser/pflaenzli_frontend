@@ -10,6 +10,8 @@ import axios from "axios";
 import moment from 'moment-timezone';
 import {defineAsyncComponent} from "vue";
 
+const apiUrl = `http://${window.location.hostname}:8000/api/`;
+
 export default {
   components: {
     apexcharts: defineAsyncComponent(() => import('vue3-apexcharts'))
@@ -89,8 +91,8 @@ export default {
       const startDate = moment().subtract(3, 'months').format();
 
       const params = {start: startDate, end: endDate};
-      const moistureResponse = await axios.get('http://localhost:8000/api/sensor', {params});
-      const pumpResponse = await axios.get('http://localhost:8000/api/pump', {params});
+      const moistureResponse = await axios.get(apiUrl + 'sensor', {params});
+      const pumpResponse = await axios.get(apiUrl + 'pump', {params});
       this.series[0].data = moistureResponse.data.map(item => ({
         x: item.timestamp,
         y: item.moisture_level,

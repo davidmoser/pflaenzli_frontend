@@ -43,6 +43,8 @@
 <script>
 import axios from 'axios';
 
+const apiUrl = `http://${window.location.hostname}:8000/api/`;
+
 export default {
   data() {
     return {
@@ -61,12 +63,12 @@ export default {
   },
   methods: {
     fetchConfig() {
-      axios.get('http://localhost:8000/api/configuration/1').then(response => {
+      axios.get(apiUrl + 'configuration/1').then(response => {
         this.config = response.data;
       });
     },
     submitConfig() {
-      axios.put('http://localhost:8000/api/configuration/1', this.config);
+      axios.put(apiUrl + 'configuration/1', this.config);
     }
   }
 }
