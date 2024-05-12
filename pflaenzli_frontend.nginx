@@ -3,7 +3,7 @@ server {
     server_name <YOUR SERVER IP>;
 
     location / {
-        root /path/to/pflaenzli_frontend;
+        root /var/www/pflaenzli_frontend;
         index index.html index.htm;
         try_files $uri $uri/ =404;
     }
