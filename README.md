@@ -29,9 +29,9 @@ npm run dev
 - Copy site configuration, enter your server IP: `sudo cp pflaenzli_frontend.nginx /etc/nginx/sites-available/pflaenzli_frontend`
 - Enable site by linking configuration: `sudo ln -s /etc/nginx/sites-available/pflaenzli_frontend /etc/nginx/sites-enabled/`
 - Nginx uses `www-data` user, which can't access the `pi` users folders
-- Create a copy of the dist folder: `mkdir /var/www/pflaenzli_frontend`
+- Create a copy of the dist folder: `sudo mkdir /var/www/pflaenzli_frontend`
 - Copy the data: `sudo cp -r dist/* /var/www/pflaenzli_frontend`
-- Change the access: `sudo chown -R www-data:www-data pflaenzli_frontend/`
+- Change the access: `sudo chown -R www-data:www-data /var/www/pflaenzli_frontend/`
 - Restart nginx: `sudo systemctl reload nginx.service`
 
 ```sh
