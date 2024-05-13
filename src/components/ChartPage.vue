@@ -26,13 +26,42 @@ export default {
           toolbar: {
             show: true,
             tools: {
-              download: true,
+              download: false,
               selection: true,
               zoom: true,
-              zoomin: true,
-              zoomout: true,
-              pan: false,
-              reset: true
+              zoomin: false,
+              zoomout: false,
+              pan: true,
+              reset: true,
+              customIcons: [
+                {
+                  icon: '<img src="/d.png" width="20">',
+                  index: 1, // Negative index to place it at the start or adjust as needed
+                  title: 'Day View',
+                  class: 'custom-icon-day',
+                  click: (chart, options, e) => {
+                    this.setTimeInterval(1);
+                  }
+                },
+                {
+                  icon: '<img src="/w.png" width="20">',
+                  index: 2,
+                  title: 'Week View',
+                  class: 'custom-icon-week',
+                  click: (chart, options, e) => {
+                    this.setTimeInterval(7);
+                  }
+                },
+                {
+                  icon: '<img src="/m.png" width="20">',
+                  index: 3,
+                  title: 'Month View',
+                  class: 'custom-icon-month',
+                  click: (chart, options, e) => {
+                    this.setTimeInterval(31);
+                  }
+                }
+              ]
             },
             autoSelected: 'zoom'
           }
@@ -42,8 +71,6 @@ export default {
           title: {
             text: 'Timestamp'
           },
-          min: moment().subtract(2, 'days').startOf('day').valueOf(),
-          max: moment().add(1, 'days').startOf('day').valueOf(),
           labels: {
             datetimeUTC: false
           }
@@ -83,14 +110,16 @@ export default {
   },
   mounted() {
     this.loadData();
+    this.setTimeInterval(1)
   },
   methods: {
     async loadData() {
       const endDate = moment().format();
       console.log(endDate);
-      const startDate = moment().subtract(3, 'months').format();
+      const startDate = moment().subtract(1, 'months').format();
 
       const params = {start: startDate, end: endDate};
+
       const moistureResponse = await axios.get(apiUrl + 'sensor', {params});
       const pumpResponse = await axios.get(apiUrl + 'pump', {params});
       this.series[0].data = moistureResponse.data.map(item => ({
@@ -101,7 +130,19 @@ export default {
         x: item.timestamp,
         y: item.action ? 1 : 0
       }));
-    }
+    }, setTimeInterval(days) {
+      const minTimestamp = moment().subtract(days - 1, 'days').startOf('day').valueOf();
+      const maxTimestamp = moment().add(1, 'day').startOf('day').valueOf();
+
+      this.chartOptions = {
+        ...this.chartOptions,
+        xaxis: {
+          ...this.chartOptions.xaxis,
+          min: minTimestamp,
+          max: maxTimestamp
+        }
+      };
+
+    },
   }
-};
-</script>
+}; </script>

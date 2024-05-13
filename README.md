@@ -33,7 +33,3 @@ npm run dev
 - Copy the data: `sudo cp -r dist/* /var/www/pflaenzli_frontend`
 - Change the access: `sudo chown -R www-data:www-data /var/www/pflaenzli_frontend/`
 - Restart nginx: `sudo systemctl reload nginx.service`
-
-```sh
-npm run build
-```
