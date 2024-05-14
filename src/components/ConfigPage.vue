@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     fetchConfig() {
-      axios.get(apiUrl + 'configuration/1').then(response => {
+      axios.get('configuration/1').then(response => {
         this.config = response.data;
       });
     },
