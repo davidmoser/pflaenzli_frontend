@@ -43,8 +43,6 @@
 <script>
 import axios from 'axios';
 
-const apiUrl = `http://${window.location.hostname}:8000/api/`;
-
 export default {
   data() {
     return {
@@ -68,7 +66,7 @@ export default {
       });
     },
     submitConfig() {
-      axios.put(apiUrl + 'configuration/1', this.config);
+      axios.put('configuration/1', this.config);
     }
   }
 }

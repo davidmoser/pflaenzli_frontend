@@ -10,21 +10,20 @@
 
 <script>
 import axios from 'axios';
-const apiUrl = `http://${window.location.hostname}:8000/api/`;
 
 export default {
   methods: {
     startPump() {
-      axios.put(apiUrl + 'pump/start');
+      axios.put('pump/start');
     },
     stopPump() {
-      axios.put(apiUrl + 'pump/stop');
+      axios.put('pump/stop');
     },
     resetPump() {
-      axios.put(apiUrl + 'pump/reset');
+      axios.put('pump/reset');
     },
     triggerMeasurement() {
-      axios.put(apiUrl + 'sensor/trigger');
+      axios.put('sensor/trigger');
     }
   }
 }

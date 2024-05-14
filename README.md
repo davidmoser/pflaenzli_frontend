@@ -25,7 +25,9 @@ npm run dev
 - Install nodejs and npm: `sudo apt install nodejs npm -y`
 - Install dependencies: `npm install`
 - Install nginx: `sudo apt install nginx`
-- Copy site configuration, enter your server IP: `sudo cp pflaenzli_frontend.nginx /etc/nginx/sites-available/pflaenzli_frontend`
+- Install password utility: `sudo apt install apache2-utils`
+- Create a password for basic authentication: `sudo htpasswd -c /etc/nginx/.htpasswd username`
+- Copy site configuration, enter your server IP or url: `sudo cp pflaenzli.nginx /etc/nginx/sites-available/pflaenzli`
 - Enable site by linking configuration: `sudo ln -s /etc/nginx/sites-available/pflaenzli_frontend /etc/nginx/sites-enabled/`
 - To create website deployment folder `/var/www/pflaenzli_frontend` and copy the files with the right permission run `./deploy.sh`
 
