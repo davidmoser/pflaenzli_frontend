@@ -29,6 +29,8 @@ npm run dev
 - Create a password for basic authentication: `sudo htpasswd -c /etc/nginx/.htpasswd username`
 - Copy site configuration, enter your server IP or url: `sudo cp pflaenzli.nginx /etc/nginx/sites-available/pflaenzli`
 - Enable site by linking configuration: `sudo ln -s /etc/nginx/sites-available/pflaenzli /etc/nginx/sites-enabled/`
+- Install certbot for https certificate: `sudo apt-get install certbot python3-certbot-nginx`
+- Install an SSL certificate: `sudo certbot --nginx -d <YOUR URL>`
 - To create website deployment folder `/var/www/pflaenzli_frontend` and copy the files with the right permission run `./deploy.sh`
 
 ## Update deployment
