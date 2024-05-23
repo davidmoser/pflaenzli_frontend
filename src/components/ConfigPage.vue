@@ -123,6 +123,5 @@ input[type="number"],
 
 h1 {
   text-align: center;
-  color: #4CAF50;
 }
 </style>

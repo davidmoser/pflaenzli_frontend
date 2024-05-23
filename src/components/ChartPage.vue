@@ -89,8 +89,11 @@ export default {
           size: [0, 5]
         },
         tooltip: {
-          shared: false,
-          intersect: true
+          enabled: true,
+          shared: true,
+          x: {
+            show: false,
+          }
         }
       },
       series: [{
@@ -142,4 +145,5 @@ export default {
 
     },
   }
-}; </script>
+};
+</script>
