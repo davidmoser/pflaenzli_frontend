@@ -22,7 +22,6 @@
         <input id="max_pumps" v-model.number="config.max_consecutive_pumps" type="number">
       </div>
 
-
       <div class="form-group checkbox-group">
         <input id="measurement_enabled" v-model="config.measurement_enabled" type="checkbox">
         <label for="measurement_enabled">Measurement Enabled</label>
@@ -30,20 +29,26 @@
 
       <div class="form-group checkbox-group">
         <input id="pump_enabled" v-model="config.pump_enabled" type="checkbox">
-        <label for="pump
-        _enabled">Pump Enabled</label>
+        <label for="pump_enabled">Pump Enabled</label>
       </div>
 
-      <button type="submit" class="save-button">Save Configuration</button>
+      <ActionButton
+        label="Save Configuration"
+        :url="'configuration/1'"
+        :requestData="config"
+      />
     </form>
   </div>
 </template>
 
-
 <script>
 import axios from 'axios';
+import ActionButton from './ActionButton.vue';
 
 export default {
+  components: {
+    ActionButton
+  },
   data() {
     return {
       config: {
@@ -64,9 +69,6 @@ export default {
       axios.get('configuration/1').then(response => {
         this.config = response.data;
       });
-    },
-    submitConfig() {
-      axios.put('configuration/1', this.config);
     }
   }
 }

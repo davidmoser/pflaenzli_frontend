@@ -1,32 +1,21 @@
 <template>
   <div class="actions-container">
     <h1>Control Actions</h1>
-    <button class="action-button" @click="startPump">Start Pump</button>
-    <button class="action-button" @click="stopPump">Stop Pump</button>
-    <button class="action-button" @click="resetPump">Reset Pump</button>
-    <button class="action-button" @click="triggerMeasurement">Trigger Measurement</button>
+    <ActionButton label="Start Pump" url="pump/start" />
+    <ActionButton label="Stop Pump" url="pump/stop" />
+    <ActionButton label="Reset Pump" url="pump/reset" />
+    <ActionButton label="Trigger Measurement" url="sensor/trigger" />
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import ActionButton from './ActionButton.vue';
 
 export default {
-  methods: {
-    startPump() {
-      axios.put('pump/start');
-    },
-    stopPump() {
-      axios.put('pump/stop');
-    },
-    resetPump() {
-      axios.put('pump/reset');
-    },
-    triggerMeasurement() {
-      axios.put('sensor/trigger');
-    }
+  components: {
+    ActionButton
   }
-}
+};
 </script>
 
 <style scoped>
@@ -35,22 +24,5 @@ export default {
   flex-direction: column;
   align-items: start;
   padding: 5px;
-}
-
-.action-button {
-  width: 200px; /* Ensures all buttons have the same width */
-  padding: 10px 20px;
-  margin: 10px 0; /* Vertical spacing between buttons */
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #4CAF50; /* Green background */
-  color: white; /* White text */
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.action-button:hover {
-  background-color: #367c39; /* Darker shade of green on hover */
 }
 </style>
