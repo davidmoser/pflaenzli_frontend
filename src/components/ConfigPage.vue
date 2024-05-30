@@ -1,7 +1,7 @@
 <template>
   <div class="config-container">
     <h1>Configuration</h1>
-    <form @submit.prevent="submitConfig" class="config-form">
+    <form class="config-form">
       <div class="form-group">
         <label for="moisture_threshold">Moisture Threshold:</label>
         <input id="moisture_threshold" v-model.number="config.moisture_threshold" type="number" min="0" max="100">
@@ -13,8 +13,13 @@
       </div>
 
       <div class="form-group">
-        <label for="duration">Pumping Duration (seconds):</label>
-        <input id="duration" v-model.number="config.pump_duration" type="number">
+        <label for="valve_duration">Valve Opening Duration (seconds):</label>
+        <input id="valve_duration" v-model.number="config.valve_duration" type="number">
+      </div>
+
+      <div class="form-group">
+        <label for="pump_duration">Pumping Duration (seconds):</label>
+        <input id="pump_duration" v-model.number="config.pump_duration" type="number">
       </div>
 
       <div class="form-group">
@@ -54,6 +59,7 @@ export default {
       config: {
         moisture_threshold: null,
         measurement_interval: null,
+        valve_duration: null,
         pump_duration: null,
         max_consecutive_pumps: null,
         measurement_enabled: null,
