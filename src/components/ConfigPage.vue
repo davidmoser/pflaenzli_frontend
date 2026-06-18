@@ -1,15 +1,20 @@
 <template>
   <div class="config-container">
     <h1>Configuration</h1>
-    <form @submit.prevent="submitConfig" class="config-form">
+    <form class="config-form">
       <div class="form-group">
         <label for="interval">Measurement Interval (seconds):</label>
         <input id="interval" v-model.number="config.measurement_interval" type="number">
       </div>
 
       <div class="form-group">
-        <label for="duration">Pumping Duration (seconds):</label>
-        <input id="duration" v-model.number="config.pump_duration" type="number">
+        <label for="valve_duration">Valve Opening Duration (seconds):</label>
+        <input id="valve_duration" v-model.number="config.valve_duration" type="number">
+      </div>
+
+      <div class="form-group">
+        <label for="pump_duration">Pumping Duration (seconds):</label>
+        <input id="pump_duration" v-model.number="config.pump_duration" type="number">
       </div>
 
       <div class="form-group checkbox-group">
@@ -19,24 +24,31 @@
 
       <div class="form-group checkbox-group">
         <input id="pump_enabled" v-model="config.pump_enabled" type="checkbox">
-        <label for="pump
-        _enabled">Pump Enabled</label>
+        <label for="pump_enabled">Pump Enabled</label>
       </div>
 
-      <button type="submit" class="save-button">Save Configuration</button>
+      <ActionButton
+        label="Save Configuration"
+        :url="'configuration/1'"
+        :requestData="config"
+      />
     </form>
   </div>
 </template>
 
-
 <script>
 import axios from 'axios';
+import ActionButton from './ActionButton.vue';
 
 export default {
+  components: {
+    ActionButton
+  },
   data() {
     return {
       config: {
         measurement_interval: null,
+        valve_duration: null,
         pump_duration: null,
         measurement_enabled: null,
         pump_enabled: null,
@@ -51,9 +63,6 @@ export default {
       axios.get('configuration/1').then(response => {
         this.config = response.data;
       });
-    },
-    submitConfig() {
-      axios.put('configuration/1', this.config);
     }
   }
 }
@@ -110,6 +119,5 @@ input[type="number"],
 
 h1 {
   text-align: center;
-  color: #4CAF50;
 }
 </style>
