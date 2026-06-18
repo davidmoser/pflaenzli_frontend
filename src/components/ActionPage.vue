@@ -3,7 +3,6 @@
     <h1>Control Actions</h1>
     <button class="action-button" @click="startPump">Start Pump</button>
     <button class="action-button" @click="stopPump">Stop Pump</button>
-    <button class="action-button" @click="resetPump">Reset Pump</button>
     <button class="action-button" @click="triggerMeasurement">Trigger Measurement</button>
   </div>
 </template>
@@ -18,9 +17,6 @@ export default {
     },
     stopPump() {
       axios.put('pump/stop');
-    },
-    resetPump() {
-      axios.put('pump/reset');
     },
     triggerMeasurement() {
       axios.put('sensor/trigger');

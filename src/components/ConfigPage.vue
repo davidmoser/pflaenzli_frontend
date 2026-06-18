@@ -3,11 +3,6 @@
     <h1>Configuration</h1>
     <form @submit.prevent="submitConfig" class="config-form">
       <div class="form-group">
-        <label for="moisture_threshold">Moisture Threshold:</label>
-        <input id="moisture_threshold" v-model.number="config.moisture_threshold" type="number" min="0" max="100">
-      </div>
-
-      <div class="form-group">
         <label for="interval">Measurement Interval (seconds):</label>
         <input id="interval" v-model.number="config.measurement_interval" type="number">
       </div>
@@ -16,12 +11,6 @@
         <label for="duration">Pumping Duration (seconds):</label>
         <input id="duration" v-model.number="config.pump_duration" type="number">
       </div>
-
-      <div class="form-group">
-        <label for="max_pumps">Max Consecutive Pumps:</label>
-        <input id="max_pumps" v-model.number="config.max_consecutive_pumps" type="number">
-      </div>
-
 
       <div class="form-group checkbox-group">
         <input id="measurement_enabled" v-model="config.measurement_enabled" type="checkbox">
@@ -47,10 +36,8 @@ export default {
   data() {
     return {
       config: {
-        moisture_threshold: null,
         measurement_interval: null,
         pump_duration: null,
-        max_consecutive_pumps: null,
         measurement_enabled: null,
         pump_enabled: null,
       }
