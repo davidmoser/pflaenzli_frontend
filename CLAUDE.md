@@ -41,13 +41,14 @@ Vue 3 + Vite app using Options API. Router uses `createMemoryHistory` (no URL pa
 
 ### Pages (in `src/components/`)
 
-- **ChartPage** — ApexCharts line/scatter chart showing moisture readings and pump actions over time. Fetches last month of data from `/api/sensor` and `/api/pump` with date range filtering. Has day/week/month view toggle via custom toolbar icons.
+- **ChartPage** — Front page. Shows an ApexCharts line/scatter chart of moisture/pump data (last month, with day/week/month toggle) and the `ScheduleEditor` for today's actions.
 - **ActionPage** — Buttons to trigger pump start/stop and force a measurement. Each uses `ActionButton` to PUT to the backend.
-- **ConfigPage** — Form to view/edit runtime configuration (measurement interval, pump/valve durations, enabled flags). Fetches from and PUTs to `/api/configuration/1`.
+- **ConfigPage** — Form to view/edit runtime configuration (measurement/pump/valve, plus irrigation planning: `pump_seconds_per_mm`, plan/window times, lat/lon). Fetches from and PUTs to `/api/configuration/1`.
+- **ScheduleEditor** — Lists/adds/edits(time)/deletes today's scheduled pump actions via `/api/schedule`.
 
 ### Key Component: ActionButton
 
-Reusable button that sends a PUT request to a given URL (with optional JSON body). Shows loading spinner, success checkmark, or error cross with 5-second auto-dismiss.
+Reusable button that sends a PUT request to a given URL (with optional JSON body via `requestData`). Shows loading spinner, success checkmark, or error cross with 5-second auto-dismiss.
 
 ### Dependencies
 

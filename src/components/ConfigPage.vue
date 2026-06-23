@@ -27,6 +27,38 @@
         <label for="pump_enabled">Pump Enabled</label>
       </div>
 
+      <h2>Irrigation Planning</h2>
+
+      <div class="form-group">
+        <label for="pump_seconds_per_mm">Pump Seconds per mm ET0:</label>
+        <input id="pump_seconds_per_mm" v-model.number="config.pump_seconds_per_mm" type="number" step="any">
+      </div>
+
+      <div class="form-group">
+        <label for="calc_time">Daily Plan Time:</label>
+        <input id="calc_time" v-model="config.calc_time" type="time">
+      </div>
+
+      <div class="form-group">
+        <label for="window_start">Watering Window Start:</label>
+        <input id="window_start" v-model="config.window_start" type="time">
+      </div>
+
+      <div class="form-group">
+        <label for="window_end">Watering Window End:</label>
+        <input id="window_end" v-model="config.window_end" type="time">
+      </div>
+
+      <div class="form-group">
+        <label for="latitude">Latitude:</label>
+        <input id="latitude" v-model.number="config.latitude" type="number" step="any">
+      </div>
+
+      <div class="form-group">
+        <label for="longitude">Longitude:</label>
+        <input id="longitude" v-model.number="config.longitude" type="number" step="any">
+      </div>
+
       <ActionButton
         label="Save Configuration"
         :url="'configuration/1'"
@@ -52,6 +84,12 @@ export default {
         pump_duration: null,
         measurement_enabled: null,
         pump_enabled: null,
+        pump_seconds_per_mm: null,
+        calc_time: null,
+        window_start: null,
+        window_end: null,
+        latitude: null,
+        longitude: null,
       }
     }
   },

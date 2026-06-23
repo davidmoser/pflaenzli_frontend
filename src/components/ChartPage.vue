@@ -2,6 +2,7 @@
   <div>
     <h1>Moisture and Pump Action Graph</h1>
     <apexcharts type="line" :options="chartOptions" :series="series"></apexcharts>
+    <ScheduleEditor />
   </div>
 </template>
 
@@ -9,10 +10,12 @@
 import axios from "axios";
 import moment from 'moment-timezone';
 import {defineAsyncComponent} from "vue";
+import ScheduleEditor from './ScheduleEditor.vue';
 
 export default {
   components: {
-    apexcharts: defineAsyncComponent(() => import('vue3-apexcharts'))
+    apexcharts: defineAsyncComponent(() => import('vue3-apexcharts')),
+    ScheduleEditor
   },
 
   data() {
