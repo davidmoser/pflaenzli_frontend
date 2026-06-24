@@ -10,6 +10,10 @@ import axios from "axios";
 import moment from 'moment-timezone';
 import {defineAsyncComponent} from "vue";
 
+// Approx. max daily reference evapotranspiration (ET₀) in the Swiss lowlands in
+// midsummer (~6–7 mm/day). Used as the right-axis ceiling unless the data exceeds it.
+const ET0_AXIS_MAX = 7;
+
 export default {
   components: {
     apexcharts: defineAsyncComponent(() => import('vue3-apexcharts')),
@@ -71,22 +75,35 @@ export default {
           },
           labels: {
             datetimeUTC: false
+          },
+          // Hide the full-height vertical crosshair line (the tooltip popup is kept).
+          crosshairs: {
+            show: false
           }
         },
         yaxis: [{
+          seriesName: 'Moisture',
           title: {
             text: 'Moisture Level'
           }
         }, {
+          seriesName: 'ET₀',
           opposite: true,
           title: {
-            text: 'Pump State'
+            text: 'ET₀ (mm)'
           },
+          min: 0,
+          max: ET0_AXIS_MAX,
+        }, {
+          // Hidden axis that keeps the pump dots pinned to the top (y = 1), unchanged.
+          seriesName: 'Pump State',
+          opposite: true,
+          show: false,
           min: 0,
           max: 1,
         }],
         markers: {
-          size: [0, 5]
+          size: [0, 0, 5]
         },
         tooltip: {
           enabled: true,
@@ -100,6 +117,11 @@ export default {
         name: 'Moisture',
         type: 'line',
         color: '#008FFB',
+        data: [] // Data fetched from API
+      }, {
+        name: 'ET₀',
+        type: 'line',
+        color: '#FEB019',
         data: [] // Data fetched from API
       }, {
         name: 'Pump State',
@@ -122,14 +144,34 @@ export default {
 
       const moistureResponse = await axios.get('sensor', {params});
       const pumpResponse = await axios.get('pump', {params});
+      // Schedule is filtered by date (schedule_date is a DateField), same start/end logic.
+      const scheduleParams = {
+        start: moment(startDate).format('YYYY-MM-DD'),
+        end: moment(endDate).format('YYYY-MM-DD'),
+      };
+      const scheduleResponse = await axios.get('schedule', {params: scheduleParams});
+
       this.series[0].data = moistureResponse.data.map(item => ({
         x: item.timestamp,
         y: item.moisture_level,
       }));
-      this.series[1].data = pumpResponse.data.map(item => ({
+
+      const et0Data = scheduleResponse.data
+        .map(item => ({x: moment(item.schedule_date).valueOf(), y: item.et0}));
+      this.series[1].data = et0Data;
+
+      this.series[2].data = pumpResponse.data.map(item => ({
         x: item.timestamp,
         y: item.action ? 1 : 0
       }));
+
+      // Keep the Swiss midsummer ceiling unless the data climbs higher.
+      const maxEt0 = et0Data.reduce((max, point) => Math.max(max, point.y), 0);
+      const axisMax = Math.max(ET0_AXIS_MAX, Math.ceil(maxEt0));
+      this.chartOptions = {
+        ...this.chartOptions,
+        yaxis: this.chartOptions.yaxis.map((axis, i) => i === 1 ? {...axis, max: axisMax} : axis)
+      };
     }, setTimeInterval(days) {
       const minTimestamp = moment().subtract(days - 1, 'days').startOf('day').valueOf();
       const maxTimestamp = moment().add(1, 'day').startOf('day').valueOf();

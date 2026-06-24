@@ -95,7 +95,8 @@ export default {
       });
     },
     fetchSchedule() {
-      axios.get('schedule', {params: {schedule_date: localToday()}}).then(response => {
+      const today = localToday();
+      axios.get('schedule', {params: {start: today, end: today}}).then(response => {
         this.schedule = response.data[0] || null;
       });
     },
