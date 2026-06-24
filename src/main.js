@@ -2,6 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from "@/router/index.js";
 import axios from "axios";
+import '@/assets/base.css';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 

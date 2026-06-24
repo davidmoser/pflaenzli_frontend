@@ -87,14 +87,18 @@ export default {
   width: 200px;
   padding: 10px 20px;
   margin: 10px 0;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  background-color: #4CAF50;
+  background-color: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius);
   transition: background-color 0.3s;
   position: relative;
+}
+
+.action-button:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
 }
 
 .action-button:disabled {
@@ -107,7 +111,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid #f3f3f3;
-  border-top: 2px solid #4CAF50;
+  border-top: 2px solid var(--color-primary);
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -120,11 +124,11 @@ export default {
 }
 
 .success-check {
-  color: #4CAF50;
+  color: var(--color-primary);
 }
 
 .error-cross {
-  color: #f44336;
+  color: var(--color-danger);
 }
 
 @keyframes spin {

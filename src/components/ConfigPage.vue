@@ -109,9 +109,6 @@ export default {
 <style scoped>
 .config-container {
   max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
 }
 
 .config-form {
@@ -123,39 +120,20 @@ export default {
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
 .checkbox-group {
-  display: flex;
+  flex-direction: row;
   align-items: center; /* Aligns items vertically centered */
-  margin-top: 5px;
+  gap: 10px;
 }
 
-input[type="checkbox"] {
-  margin-right: 10px; /* Spacing between the checkbox and the label */
-}
-
-input[type="number"],
-.save-button {
+input[type="number"] {
   width: 100%;
-  padding: 8px;
 }
 
-.save-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.save-button:hover {
-  background-color: #367c39;
-}
-
-h1 {
-  text-align: center;
+label {
+  color: var(--color-muted);
 }
 </style>

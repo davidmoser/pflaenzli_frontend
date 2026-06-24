@@ -22,6 +22,5 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding: 5px;
 }
 </style>
