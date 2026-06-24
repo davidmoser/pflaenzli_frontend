@@ -4,15 +4,17 @@
       <span>{{ label }}</span>
       <span v-if="loading" class="loader"></span>
     </button>
-    <span v-if="success" class="status success-check">&#10003;</span>
-    <span v-if="error" class="status error-cross">&#10007;</span>
+    <Check v-if="success" class="status success-check" :size="22" />
+    <X v-if="error" class="status error-cross" :size="22" />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { Check, X } from 'lucide-vue-next';
 
 export default {
+  components: { Check, X },
   props: {
     label: {
       type: String,
