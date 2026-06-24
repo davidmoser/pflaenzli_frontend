@@ -1,6 +1,6 @@
 <template>
   <div class="schedule-container">
-    <h2>Today's Watering Schedule</h2>
+    <h1>Today's Watering Schedule</h1>
 
     <div class="summary">
       <span>ET₀: {{ schedule ? schedule.et0 + ' mm' : '—' }}</span>
@@ -111,7 +111,7 @@ export default {
   margin: 20px 0;
 }
 
-h2 {
+h1 {
   color: #333;
 }
 
