@@ -36,4 +36,5 @@ npm run dev
 ## Update deployment
 
 - Pull the new code with git
+- If there are new dependencies `npm install`
 - Run `./deploy.sh`
