@@ -11,7 +11,7 @@
 
 <script>
 import axios from 'axios';
-import { Check, X } from 'lucide-vue-next';
+import { Check, X } from '@lucide/vue';
 
 export default {
   components: { Check, X },

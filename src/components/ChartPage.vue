@@ -8,6 +8,7 @@
 <script>
 import axios from "axios";
 import moment from 'moment-timezone';
+import ApexCharts from "apexcharts";
 import {defineAsyncComponent} from "vue";
 
 // Approx. max daily reference evapotranspiration (ET₀) in the Swiss lowlands in
@@ -25,6 +26,12 @@ export default {
         chart: {
           id: 'moisture-level',
           group: 'moisture-pump',
+          // ApexCharts 5's initial render animation can leave the line series
+          // undrawn until a resize; disabling it draws the curves immediately
+          // (also cheaper to render, especially on mobile).
+          animations: {
+            enabled: false
+          },
           toolbar: {
             show: true,
             tools: {
@@ -70,6 +77,10 @@ export default {
         },
         xaxis: {
           type: 'datetime',
+          // The visible window (day/week/month) is set entirely via
+          // ApexCharts.exec('zoomX', ...) in setTimeInterval — NOT via min/max here.
+          // A config min/max would be re-applied on every updateSeries and override
+          // the selected window (reverting week/month back to day).
           title: {
             text: 'Timestamp'
           },
@@ -88,6 +99,10 @@ export default {
           },
           min: 0,
           max: 100,
+          // ApexCharts 5 defaults axis labels to 2 decimals; keep whole numbers.
+          labels: {
+            formatter: (val) => val.toFixed(0)
+          },
         }, {
           seriesName: 'ET₀',
           opposite: true,
@@ -96,6 +111,10 @@ export default {
           },
           min: 0,
           max: ET0_AXIS_MAX,
+          tickAmount: ET0_AXIS_MAX,
+          labels: {
+            formatter: (val) => val.toFixed(0)
+          },
         }, {
           // Hidden axis that keeps the pump dots pinned to the top (y = 1), unchanged.
           seriesName: 'Pump State',
@@ -130,12 +149,13 @@ export default {
         type: 'scatter',
         color: '#FF4560',
         data: [] // Data fetched from API
-      }]
+      }],
+      // Full month of data, kept so each view can be re-windowed (filtered) below.
+      raw: {moisture: [], et0: [], pump: []}
     };
   },
   mounted() {
     this.loadData();
-    this.setTimeInterval(1)
   },
   methods: {
     async loadData() {
@@ -153,32 +173,32 @@ export default {
       };
       const scheduleResponse = await axios.get('schedule', {params: scheduleParams});
 
-      this.series[0].data = moistureResponse.data.map(item => ({
-        x: item.timestamp,
-        y: item.moisture_level,
-      }));
-
-      const et0Data = scheduleResponse.data
-        .map(item => ({x: moment(item.schedule_date).valueOf(), y: item.et0}));
-      this.series[1].data = et0Data;
-
-      this.series[2].data = pumpResponse.data.map(item => ({
-        x: item.timestamp,
-        y: item.action ? 1 : 0
-      }));
+      // Keep the full month; x as numeric ms so all series window uniformly.
+      this.raw = {
+        moisture: moistureResponse.data.map(item => ({x: moment(item.timestamp).valueOf(), y: item.moisture_level})),
+        et0: scheduleResponse.data.map(item => ({x: moment(item.schedule_date).valueOf(), y: item.et0})),
+        pump: pumpResponse.data.map(item => ({x: moment(item.timestamp).valueOf(), y: item.action ? 1 : 0})),
+      };
+      this.setTimeInterval(1); // initial day view
     }, setTimeInterval(days) {
       const minTimestamp = moment().subtract(days - 1, 'days').startOf('day').valueOf();
       const maxTimestamp = moment().add(1, 'day').startOf('day').valueOf();
 
-      this.chartOptions = {
-        ...this.chartOptions,
-        xaxis: {
-          ...this.chartOptions.xaxis,
-          min: minTimestamp,
-          max: maxTimestamp
-        }
-      };
+      // Filter each series to the visible window so out-of-window points don't exist.
+      // ApexCharts clips line paths tightly but clips markers with padding, so a pump
+      // marker just outside the window would otherwise leak past the y-axis.
+      const clip = (points) => points.filter(p => p.x >= minTimestamp && p.x <= maxTimestamp);
+      this.series[0].data = clip(this.raw.moisture);
+      this.series[1].data = clip(this.raw.et0);
+      this.series[2].data = clip(this.raw.pump);
 
+      // Set the exact window via zoomX, in nextTick so it runs AFTER the updateSeries
+      // triggered by the assignments above (otherwise updateSeries re-ranges the x-axis
+      // to the data and the window is lost). zoomX (not a chartOptions reassignment)
+      // avoids the updateOptions/toolbar remount that drops the customIcons handlers.
+      this.$nextTick(() => {
+        ApexCharts.exec(this.chartOptions.chart.id, 'zoomX', minTimestamp, maxTimestamp);
+      });
     },
   }
 };

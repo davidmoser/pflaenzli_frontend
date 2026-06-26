@@ -58,7 +58,7 @@
 
 <script>
 import axios from 'axios';
-import { Pencil, Trash2, Plus, Check } from 'lucide-vue-next';
+import { Pencil, Trash2, Plus, Check } from '@lucide/vue';
 
 // The API uses "HH:MM:SS"; <input type="time"> uses "HH:MM".
 function toInput(time) {
