@@ -39,14 +39,14 @@
         <p v-if="actions.length === 0" class="empty">No actions scheduled for today.</p>
         <ul v-else class="action-list">
           <li v-for="action in actions" :key="action.id" class="action-row">
-            <input type="time" v-model="action.time" @change="updateAction(action)">
+            <TimeInput v-model="action.time" @change="updateAction(action)" />
             <button class="delete-button" @click="deleteAction(action)" title="Delete">
               <Trash2 :size="18" />
             </button>
           </li>
         </ul>
         <div class="add-row">
-          <input type="time" v-model="newTime">
+          <TimeInput v-model="newTime" />
           <button class="add-button" @click="addAction" :disabled="!newTime" title="Add action">
             <Plus :size="18" />
           </button>
@@ -59,6 +59,7 @@
 <script>
 import axios from 'axios';
 import { Pencil, Trash2, Plus, Check } from '@lucide/vue';
+import TimeInput from './TimeInput.vue';
 
 // The API uses "HH:MM:SS"; <input type="time"> uses "HH:MM".
 function toInput(time) {
@@ -75,7 +76,7 @@ function localToday() {
 }
 
 export default {
-  components: { Pencil, Trash2, Plus, Check },
+  components: { Pencil, Trash2, Plus, Check, TimeInput },
   data() {
     return {
       actions: [],

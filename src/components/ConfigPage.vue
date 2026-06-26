@@ -36,17 +36,17 @@
 
       <div class="form-group">
         <label for="calc_time">Daily Plan Time:</label>
-        <input id="calc_time" v-model="config.calc_time" type="time">
+        <TimeInput id="calc_time" v-model="config.calc_time" />
       </div>
 
       <div class="form-group">
         <label for="window_start">Watering Window Start:</label>
-        <input id="window_start" v-model="config.window_start" type="time">
+        <TimeInput id="window_start" v-model="config.window_start" />
       </div>
 
       <div class="form-group">
         <label for="window_end">Watering Window End:</label>
-        <input id="window_end" v-model="config.window_end" type="time">
+        <TimeInput id="window_end" v-model="config.window_end" />
       </div>
 
       <div class="form-group">
@@ -71,10 +71,12 @@
 <script>
 import axios from 'axios';
 import ActionButton from './ActionButton.vue';
+import TimeInput from './TimeInput.vue';
 
 export default {
   components: {
-    ActionButton
+    ActionButton,
+    TimeInput
   },
   data() {
     return {
