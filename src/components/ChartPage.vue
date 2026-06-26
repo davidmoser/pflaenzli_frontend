@@ -85,7 +85,9 @@ export default {
           seriesName: 'Moisture',
           title: {
             text: 'Moisture Level'
-          }
+          },
+          min: 0,
+          max: 100,
         }, {
           seriesName: 'ET₀',
           opposite: true,
@@ -164,14 +166,6 @@ export default {
         x: item.timestamp,
         y: item.action ? 1 : 0
       }));
-
-      // Keep the Swiss midsummer ceiling unless the data climbs higher.
-      const maxEt0 = et0Data.reduce((max, point) => Math.max(max, point.y), 0);
-      const axisMax = Math.max(ET0_AXIS_MAX, Math.ceil(maxEt0));
-      this.chartOptions = {
-        ...this.chartOptions,
-        yaxis: this.chartOptions.yaxis.map((axis, i) => i === 1 ? {...axis, max: axisMax} : axis)
-      };
     }, setTimeInterval(days) {
       const minTimestamp = moment().subtract(days - 1, 'days').startOf('day').valueOf();
       const maxTimestamp = moment().add(1, 'day').startOf('day').valueOf();
