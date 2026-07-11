@@ -49,16 +49,6 @@
         <TimeInput id="window_end" v-model="config.window_end" />
       </div>
 
-      <div class="form-group">
-        <label for="latitude">Latitude:</label>
-        <input id="latitude" v-model.number="config.latitude" type="number" step="any">
-      </div>
-
-      <div class="form-group">
-        <label for="longitude">Longitude:</label>
-        <input id="longitude" v-model.number="config.longitude" type="number" step="any">
-      </div>
-
       <ActionButton
         label="Save Configuration"
         :url="'configuration/1'"
@@ -90,8 +80,6 @@ export default {
         calc_time: null,
         window_start: null,
         window_end: null,
-        latitude: null,
-        longitude: null,
       }
     }
   },
